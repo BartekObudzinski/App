@@ -202,8 +202,9 @@ function OptionRowLHN({
             reportID={reportID}
             report={report}
             optionItem={optionItem}
-            renderChildren={renderPressableRow}
-        />
+        >
+            {renderPressableRow()}
+        </OptionRowTooltipLayer>
     );
 }
 
