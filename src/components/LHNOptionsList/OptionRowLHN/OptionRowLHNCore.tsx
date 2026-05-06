@@ -10,16 +10,13 @@ import getContextMenuAccessibilityProps from '@components/utils/getContextMenuAc
 import useEnvironment from '@hooks/useEnvironment';
 import {useMemoizedLazyExpensifyIcons} from '@hooks/useLazyAsset';
 import useLocalize from '@hooks/useLocalize';
-import useOnyx from '@hooks/useOnyx';
 import useStyleUtils from '@hooks/useStyleUtils';
 import useTheme from '@hooks/useTheme';
 import useThemeStyles from '@hooks/useThemeStyles';
 import FS from '@libs/Fullstory';
 import {shouldUseBoldText} from '@libs/OptionsListUtils';
-import {isChatUsedForOnboarding as isChatUsedForOnboardingReportUtils} from '@libs/ReportUtils';
 import variables from '@styles/variables';
 import CONST from '@src/CONST';
-import ONYXKEYS from '@src/ONYXKEYS';
 import OptionRowAlternateText from './OptionRowAlternateText';
 import OptionRowAvatar from './OptionRowAvatar';
 import OptionRowErrorBadge from './OptionRowErrorBadge';
@@ -47,9 +44,7 @@ function OptionRowLHN({
     const StyleUtils = useStyleUtils();
     const expensifyIcons = useMemoizedLazyExpensifyIcons(['Pencil', 'Pin']);
 
-    const {onboardingPurpose, onboarding, isScreenFocused} = useLHNTooltipContext();
-    const [conciergeReportID] = useOnyx(ONYXKEYS.CONCIERGE_REPORT_ID);
-    const isChatUsedForOnboarding = isChatUsedForOnboardingReportUtils(report, onboarding, conciergeReportID, onboardingPurpose);
+    const {isScreenFocused} = useLHNTooltipContext();
 
     const {translate} = useLocalize();
     const isInFocusMode = viewMode === CONST.OPTION_MODE.COMPACT;
@@ -133,7 +128,6 @@ function OptionRowLHN({
                                         report={report}
                                         displayNameStyle={displayNameStyle}
                                         testID={testID}
-                                        isChatUsedForOnboarding={isChatUsedForOnboarding}
                                     />
                                     <OptionRowAlternateText
                                         alternateText={optionItem.alternateText}

@@ -10,10 +10,10 @@ import useThemeStyles from '@hooks/useThemeStyles';
 import DateUtils from '@libs/DateUtils';
 import type {OptionData} from '@libs/ReportUtils';
 import {isGroupChat, isOneOnOneChat, isSystemChat} from '@libs/ReportUtils';
-import FreeTrial from '@pages/settings/Subscription/FreeTrial';
 import CONST from '@src/CONST';
 import type {Report} from '@src/types/onyx';
 import {isEmptyObject} from '@src/types/utils/EmptyObject';
+import OptionRowFreeTrialBadge from './OptionRowFreeTrialBadge';
 
 type OptionRowTitleWithStatusProps = {
     /** Option row data used for the title, tooltips, and status emoji */
@@ -27,13 +27,10 @@ type OptionRowTitleWithStatusProps = {
 
     /** Row test id forwarded to DisplayNames */
     testID: number;
-
-    /** Whether this chat is part of the onboarding flow (shows Free Trial badge) */
-    isChatUsedForOnboarding: boolean;
 };
 
 /** DisplayNames, onboarding FreeTrial badge, and 1:1 status emoji for an LHN row */
-function OptionRowTitleWithStatus({optionItem, report, displayNameStyle, testID, isChatUsedForOnboarding}: OptionRowTitleWithStatusProps) {
+function OptionRowTitleWithStatus({optionItem, report, displayNameStyle, testID}: OptionRowTitleWithStatusProps) {
     const styles = useThemeStyles();
     const {translate} = useLocalize();
     const currentUserPersonalDetails = useCurrentUserPersonalDetails();
@@ -71,7 +68,7 @@ function OptionRowTitleWithStatus({optionItem, report, displayNameStyle, testID,
                 }
                 testID={testID}
             />
-            {isChatUsedForOnboarding && <FreeTrial badgeStyles={[styles.mnh0, styles.pl2, styles.pr2, styles.ml1, styles.flexShrink1]} />}
+            <OptionRowFreeTrialBadge report={report} />
             {isStatusVisible && (
                 <Tooltip
                     text={statusContent}
