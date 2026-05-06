@@ -4,7 +4,6 @@ import {StyleSheet, View} from 'react-native';
 import Icon from '@components/Icon';
 import {useLHNTooltipContext} from '@components/LHNOptionsList/LHNTooltipContext';
 import type {OptionRowLHNProps} from '@components/LHNOptionsList/types';
-import Text from '@components/Text';
 import getContextMenuAccessibilityHint from '@components/utils/getContextMenuAccessibilityHint';
 import getContextMenuAccessibilityProps from '@components/utils/getContextMenuAccessibilityProps';
 import useEnvironment from '@hooks/useEnvironment';
@@ -14,7 +13,6 @@ import useOnyx from '@hooks/useOnyx';
 import useStyleUtils from '@hooks/useStyleUtils';
 import useTheme from '@hooks/useTheme';
 import useThemeStyles from '@hooks/useThemeStyles';
-import FS from '@libs/Fullstory';
 import {shouldUseBoldText} from '@libs/OptionsListUtils';
 import {isChatUsedForOnboarding as isChatUsedForOnboardingReportUtils} from '@libs/ReportUtils';
 import variables from '@styles/variables';
@@ -22,6 +20,7 @@ import CONST from '@src/CONST';
 import ONYXKEYS from '@src/ONYXKEYS';
 import OptionRowAlternateText from './OptionRowAlternateText';
 import OptionRowAvatar from './OptionRowAvatar';
+import OptionRowDescriptiveText from './OptionRowDescriptiveText';
 import OptionRowErrorBadge from './OptionRowErrorBadge';
 import OptionRowInfoBadge from './OptionRowInfoBadge';
 import OptionRowPressable from './OptionRowPressable';
@@ -143,14 +142,10 @@ function OptionRowLHN({
                                         style={style}
                                     />
                                 </View>
-                                {optionItem?.descriptiveText ? (
-                                    <View
-                                        style={[styles.flexWrap]}
-                                        fsClass={FS.getChatFSClass(report)}
-                                    >
-                                        <Text style={[styles.textLabel]}>{optionItem.descriptiveText}</Text>
-                                    </View>
-                                ) : null}
+                                <OptionRowDescriptiveText
+                                    descriptiveText={optionItem?.descriptiveText}
+                                    report={report}
+                                />
                                 <OptionRowErrorBadge
                                     brickRoadIndicator={brickRoadIndicator}
                                     actionBadgeText={actionBadgeText}
