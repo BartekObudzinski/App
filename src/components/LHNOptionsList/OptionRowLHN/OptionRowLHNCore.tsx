@@ -1,14 +1,12 @@
 import React, {useRef} from 'react';
 import type {ViewStyle} from 'react-native';
 import {StyleSheet, View} from 'react-native';
-import Icon from '@components/Icon';
 import {useLHNTooltipContext} from '@components/LHNOptionsList/LHNTooltipContext';
 import type {OptionRowLHNProps} from '@components/LHNOptionsList/types';
 import Text from '@components/Text';
 import getContextMenuAccessibilityHint from '@components/utils/getContextMenuAccessibilityHint';
 import getContextMenuAccessibilityProps from '@components/utils/getContextMenuAccessibilityProps';
 import useEnvironment from '@hooks/useEnvironment';
-import {useMemoizedLazyExpensifyIcons} from '@hooks/useLazyAsset';
 import useLocalize from '@hooks/useLocalize';
 import useOnyx from '@hooks/useOnyx';
 import useStyleUtils from '@hooks/useStyleUtils';
@@ -17,13 +15,14 @@ import useThemeStyles from '@hooks/useThemeStyles';
 import FS from '@libs/Fullstory';
 import {shouldUseBoldText} from '@libs/OptionsListUtils';
 import {isChatUsedForOnboarding as isChatUsedForOnboardingReportUtils} from '@libs/ReportUtils';
-import variables from '@styles/variables';
 import CONST from '@src/CONST';
 import ONYXKEYS from '@src/ONYXKEYS';
 import OptionRowAlternateText from './OptionRowAlternateText';
 import OptionRowAvatar from './OptionRowAvatar';
+import OptionRowDraftIcon from './OptionRowDraftIcon';
 import OptionRowErrorBadge from './OptionRowErrorBadge';
 import OptionRowInfoBadge from './OptionRowInfoBadge';
+import OptionRowPinIcon from './OptionRowPinIcon';
 import OptionRowPressable from './OptionRowPressable';
 import OptionRowTitleWithStatus from './OptionRowTitleWithStatus';
 import OptionRowTooltipLayer from './OptionRowTooltipLayer';
@@ -45,8 +44,6 @@ function OptionRowLHN({
     const styles = useThemeStyles();
     const popoverAnchor = useRef<View>(null);
     const StyleUtils = useStyleUtils();
-    const expensifyIcons = useMemoizedLazyExpensifyIcons(['Pencil', 'Pin']);
-
     const {onboardingPurpose, onboarding, isScreenFocused} = useLHNTooltipContext();
     const [conciergeReportID] = useOnyx(ONYXKEYS.CONCIERGE_REPORT_ID);
     const isChatUsedForOnboarding = isChatUsedForOnboardingReportUtils(report, onboarding, conciergeReportID, onboardingPurpose);
@@ -162,34 +159,14 @@ function OptionRowLHN({
                                 brickRoadIndicator={brickRoadIndicator}
                                 actionBadgeText={actionBadgeText}
                             />
-                            {hasDraftComment && !!optionItem.isAllowedToComment && (
-                                <View
-                                    style={styles.ml2}
-                                    accessibilityLabel={translate('sidebarScreen.draftedMessage')}
-                                >
-                                    <Icon
-                                        testID="Pencil Icon"
-                                        fill={theme.icon}
-                                        src={expensifyIcons.Pencil}
-                                        width={variables.iconSizeSmall}
-                                        height={variables.iconSizeSmall}
-                                    />
-                                </View>
-                            )}
-                            {!brickRoadIndicator && !!optionItem.isPinned && (
-                                <View
-                                    style={styles.ml2}
-                                    accessibilityLabel={translate('sidebarScreen.chatPinned')}
-                                >
-                                    <Icon
-                                        testID="Pin Icon"
-                                        fill={theme.icon}
-                                        src={expensifyIcons.Pin}
-                                        width={variables.iconSizeSmall}
-                                        height={variables.iconSizeSmall}
-                                    />
-                                </View>
-                            )}
+                            <OptionRowDraftIcon
+                                hasDraftComment={hasDraftComment}
+                                isAllowedToComment={optionItem.isAllowedToComment}
+                            />
+                            <OptionRowPinIcon
+                                isPinned={optionItem.isPinned}
+                                brickRoadIndicator={brickRoadIndicator}
+                            />
                         </View>
                     </>
                 );
